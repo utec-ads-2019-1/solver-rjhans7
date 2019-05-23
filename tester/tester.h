@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "../operations/operation.h"
+#include "../operations/operation.cpp"
 
 using namespace std;
 
