@@ -23,7 +23,6 @@ class Operation {
         float operate(){
             return operatePostfix(toPostfix(reduceOperator(equation)));
         }
-
     int precedence (char myChar){
         if(myChar == '^') return 3;
         else if(myChar == '*' || myChar == '/') return 2;
@@ -63,6 +62,9 @@ class Operation {
     bool isMinus(char myChar) {
         return myChar == '-';
     }
+    bool isMult(char myChar){
+        return  myChar == '*';
+    }
 
     string toPostfix (string equation){
         auto myStack = new stack<char>;
@@ -78,16 +80,23 @@ class Operation {
                     myResult->push_back(equation.at(i));
                     myResult->push_back(' ');
                 }
-            }else if(isOperator(equation.at(i))){
-                //precedencia del operador del stack
-                while (!myStack->empty() && isOperator(myStack->top()) && (precedence(myStack->top()) >= precedence(equation.at(i)))){ //Ordenar de acuerdo a precedencia
-                    myResult->push_back(myStack->top());
-                    myResult->push_back(' ');
-                    myStack->pop();
-                }
-                myStack->push(equation.at(i));
-                //myResult->push_back(' ');
+            }
 
+            else if(isOperator(equation.at(i))){
+                if(myResult->empty() || isMult(equation.at(i-1)) || isLeftParentesis(equation.at(i-1))){ //Controlar negativos
+                    //myResult->push_back('-');
+                    myResult->push_back(equation.at(i));
+                }else {
+                    //precedencia del operador del stack
+                    while (!myStack->empty() && isOperator(myStack->top()) &&
+                           (precedence(myStack->top()) >= precedence(equation.at(i)))) { //Ordenar de acuerdo a precedencia
+                        myResult->push_back(myStack->top());
+                        myResult->push_back(' ');
+                        myStack->pop();
+                    }
+                    myStack->push(equation.at(i));
+                    //myResult->push_back(' ');
+                }
             }else if (isParentesis(equation.at(i))){
                 if(isLeftParentesis(equation.at(i)))
                     myStack->push(equation.at(i));
@@ -160,30 +169,32 @@ class Operation {
         }
     }
 
-    float operatePostfix(string equation) {
-        stringstream ss(equation);
-        string word;
+    float operatePostfix(string equation){
+        stringstream ss(equation); string word;
         auto myStack = new stack<float>;
-        while (ss >> word) {
-            if (!isOperator(word.at(0))) {
+        while (ss>>word){
+            if(word.size()>1 && isOperator(word.at(0)) && !isOperator(word.at(1))){
+                myStack->push(stof(word));
+            }
+            else if(!isOperator(word.at(0))){
                 if(isVariable(word.at(0))){
                     float variable;
                     cout << "Ingrese el valor de la variable "<<word<<": ";
                     cin >> variable;
                     myStack->push(variable);
                 }else
-                myStack->push(stof(word));
-            } else if (isOperator(word.at(0))) {
-                float second = myStack->top();
-                myStack->pop();
-                float first = myStack->top();
-                myStack->pop();
-                float result = operates(first, second, word.at(0));
+                    myStack->push(stof(word));
+
+            }else if(isOperator(word.at(0))){
+                float second = myStack->top(); myStack->pop();
+                float first = myStack->top(); myStack->pop();
+                float result = operates(first, second,word.at(0));
                 myStack->push(result);
             }
         }
 
         return myStack->top();
+
     }
 
 
