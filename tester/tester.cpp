@@ -12,6 +12,8 @@ void Tester::execute() {
        "((7*3)/4+6*(3^2)/2)*(-1)",
         "(5+-3)+(21/3*5)-(5^3-2)",
         "(19--45/16*100-(181^2-15*10))",
+        "7/4*((a+b)*a)+3", //Ingrese a=0 y b=0
+        "a-2*5/2+1-2^4+a", //Ingrese a=2
         "MiNotaEs"      //Debe ingresar el valor de la variable MiNotaEs
 
     };  
@@ -27,6 +29,8 @@ void Tester::execute() {
         -32.25,
         -86,
         -32310.75,
+        3,
+        -16,
         20
     };
 

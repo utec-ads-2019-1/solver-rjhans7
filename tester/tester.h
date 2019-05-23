@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 #ifndef NDEBUG
 #   define ASSERT(condition, message) \
     do { \

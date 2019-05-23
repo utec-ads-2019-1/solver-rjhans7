@@ -6,6 +6,7 @@
 #include <stack>
 #include <math.h>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -173,16 +174,23 @@ class Operation {
     float operatePostfix(string equation){
         stringstream ss(equation); string word;
         auto myStack = new stack<float>;
+        map<string, float> myVariablesValues;
+            map<string,float>::iterator it;
         while (ss>>word){
             if(word.size()>1 && isOperator(word.at(0)) && !isOperator(word.at(1))){
                 myStack->push(stof(word));
             }
             else if(!isOperator(word.at(0))){
-                if(isVariable(word.at(0))){
+                it = myVariablesValues.find(word);
+                if(isVariable(word.at(0))) {
+                    if(it != myVariablesValues.end()){ //Si lo encuentra en el mapa
+                        myStack->push(myVariablesValues.find(word)->second);
+                    }else{
                     float variable;
-                    cout << "Ingrese el valor de la variable "<<word<<": ";
+                    cout << "Ingrese el valor de la variable " << word << ": ";
                     cin >> variable;
-                    myStack->push(variable);
+                    myVariablesValues[word] = variable;
+                    myStack->push(variable);}
                 }else
                     myStack->push(stof(word));
 
