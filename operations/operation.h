@@ -169,6 +169,7 @@ class Operation {
         }
     }
 
+
     float operatePostfix(string equation){
         stringstream ss(equation); string word;
         auto myStack = new stack<float>;

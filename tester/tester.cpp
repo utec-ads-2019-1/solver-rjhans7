@@ -13,6 +13,7 @@ void Tester::execute() {
         "(5+-3)+(21/3*5)-(5^3-2)",
         "(19--45/16*100-(181^2-15*10))",
         "MiNotaEs"      //Debe ingresar el valor de la variable MiNotaEs
+
     };  
 
     float results[] = {
