@@ -36,6 +36,11 @@ class Operation {
         else if (myChar>='A' && myChar<='Z') return true;
         return false;
     }
+    bool isVariable(char myChar){
+        if (myChar>='a' && myChar<='z') return true;
+        else if (myChar>='A' && myChar<='Z') return true;
+        return false;
+    }
     bool isOperator(char myChar) {
         return myChar == '+' || myChar == '-' || myChar == '*' || myChar == '/' || myChar == '^';
     }
@@ -161,6 +166,12 @@ class Operation {
         auto myStack = new stack<float>;
         while (ss >> word) {
             if (!isOperator(word.at(0))) {
+                if(isVariable(word.at(0))){
+                    float variable;
+                    cout << "Ingrese el valor de la variable "<<word<<": ";
+                    cin >> variable;
+                    myStack->push(variable);
+                }else
                 myStack->push(stof(word));
             } else if (isOperator(word.at(0))) {
                 float second = myStack->top();
